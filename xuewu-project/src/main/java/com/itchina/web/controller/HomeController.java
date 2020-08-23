@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  **/
 @Controller
 public class HomeController {
-    @RequestMapping("/")
+    @RequestMapping(value = {"/","/index"})
     public String getTest(Model model) {
         model.addAttribute("name", "缺的东西很多，缺实战，缺经验，找工作不难，呆下去才难");
         return "index";

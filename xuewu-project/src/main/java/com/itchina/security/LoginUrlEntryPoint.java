@@ -18,13 +18,9 @@ import java.util.Map;
  *  基于角色的登录入口控制，即不同的角色，登录入口不同，即  user对应user的登录页面，admin对应admin的登录页面
  **/
 public class LoginUrlEntryPoint extends LoginUrlAuthenticationEntryPoint {
-
     final Logger logger = LoggerFactory.getLogger(LoginUrlEntryPoint.class);
-
     private PathMatcher pathMatcher = new AntPathMatcher();
-
     private final Map<String, String> authEntryPointMap;
-
     public LoginUrlEntryPoint(String loginFormUrl) {
         super(loginFormUrl);
         authEntryPointMap = new HashMap<>();
@@ -37,7 +33,9 @@ public class LoginUrlEntryPoint extends LoginUrlAuthenticationEntryPoint {
     }
 
     @Override
-    protected String determineUrlToUseForThisRequest(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
+    protected String determineUrlToUseForThisRequest(HttpServletRequest request,
+                                                     HttpServletResponse response,
+                                                     AuthenticationException exception) {
         String uri = request.getRequestURI().replace(request.getContextPath(), "");
         logger.info("uri= "+request.getRequestURI()+",replace= "+uri);
         logger.info("url= "+request.getRequestURL());

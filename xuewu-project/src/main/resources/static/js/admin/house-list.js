@@ -4,7 +4,7 @@
 // 【关键】数据显示控制 服务器分页
 var table = $('#data-table').DataTable({
     "order": [[7, "desc"]],//默认创建时间排序
-    "pageLength": 3, // 配置单页显示条数
+    "pageLength": 20, // 配置单页显示条数
     "paging": true, // 关闭本地分页
     "lengthChange": false, // 不允许用户改变表格每页显示的记录数
     "searching": false, // 不允许Datatables开启本地搜索
@@ -80,7 +80,7 @@ var table = $('#data-table').DataTable({
         targets: 2,
         render: function (data, type, row, meta) {
             return '<td><img onClick="house_edit(\'查看\', \'/admin/house/show?id=' + row.id + '\')" title="查看"' +
-                ' class="picture-thumb" src="' + data + '?imageView2/1/w/200/h/100"></td>';
+                ' class="picture-thumb" src="' + data + '"></td>';
         }
     }, {
         targets: 7,

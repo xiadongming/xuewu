@@ -29,7 +29,6 @@ public class AuthProvider implements AuthenticationProvider {
 
     private final Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
 
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         /**
@@ -39,6 +38,7 @@ public class AuthProvider implements AuthenticationProvider {
         String passWord = (String) authentication.getCredentials();
         logger.info("用户输入的，，name= "+name+", passWord= "+passWord);
         User user = userService.findUserByName(name);
+        logger.info("数据库查询出的用户信息：user= " + user);
         if (null == user) {
             throw new AuthenticationCredentialsNotFoundException("权限验证失败");
         }

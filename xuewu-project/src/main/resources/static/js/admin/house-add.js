@@ -118,10 +118,10 @@ $(function () {
         submitHandler: function (form) {
             var cover = $(form).find("input:radio[name='cover']:checked").val();
 
-            if (cover == null || typeof(cover) == "undefined" || cover == "" || cover.length < 1) {
+         /*   if (cover == null || typeof(cover) == "undefined" || cover == "" || cover.length < 1) {
                 layer.msg('至少要上传一个封面！', {icon: 5, time: 2000});
                 return false;
-            }
+            }*/
 
             $(form).find('input.house-tag').remove();
             var index = 0;
@@ -130,8 +130,9 @@ $(function () {
             });
 
             $(form).ajaxSubmit({
-                type: 'post',
-                url: '/admin/add/house', // 提交地址
+                type: "post",
+                url: "/admin/add/house/form", // 提交地址
+                cache: false,
                 success: function (data) {
                     if (data.code === 200) {
                         alert('提交成功！');
@@ -145,6 +146,7 @@ $(function () {
                 },
                 error: function (request, message, e) {
                     layer.msg(request.responseText, {icon: 5, time: 2000});
+                    console.debug(e)
                 }
             });
             return false; //此处必须返回false，阻止常规的form提交

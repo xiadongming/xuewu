@@ -12,7 +12,8 @@ var regionCountMap = {}, // 地区数据
 function load(city, regions, aggData) {
     // 百度地图API功能
     var map = new BMap.Map("allmap", {minZoom: 12}); // 创建实例。设置地图显示最大级别为城市
-    var point = new BMap.Point(city.baiduMapLongitude, city.baiduMapLatitude); // 城市中心
+    //var point = new BMap.Point(city.baiduMapLongitude, city.baiduMapLatitude); // 城市中心
+    var point = new BMap.Point(116.404185, 39.915574); // 城市中心
     map.centerAndZoom(point, 12); // 初始化地图，设置中心点坐标及地图级别
 
     map.addControl(new BMap.NavigationControl({enableGeolocation: true})); // 添加比例尺控件
@@ -49,7 +50,7 @@ function drawRegion(map, regionList) {
     var textLabel;
     for (var i = 0; i < regionList.length; i++) {
 
-        regionPoint = new BMap.Point(regionList[i].baiduMapLongitude, regionList[i].baiduMapLatitude);
+        regionPoint = new BMap.Point(regionList[i].baiduMapLongtitue, regionList[i].baiduMapLatitude);
 
         var houseCount = 0;
         if (regionList[i].en_name in regionCountMap) {
@@ -86,7 +87,7 @@ function drawRegion(map, regionList) {
         // 记录行政区域覆盖物
         polygonContext[textContent] = []; // 点集合
         (function (textContent) { // 闭包传参
-            boundary.get(city.cn_name + regionList[i].cn_name, function(rs) { // 获取行政区域
+            boundary.get(city.cn_name + regionList[i].cn_name, function (rs) { // 获取行政区域
                 var count = rs.boundaries.length; // 行政区域边界点集合长度
                 if (count === 0) {
                     alert('未能获取当前输入行政区域')
@@ -99,7 +100,7 @@ function drawRegion(map, regionList) {
                         rs.boundaries[j],
                         {
                             strokeWeight: 2,
-                            strokeColor:'#0054a5',
+                            strokeColor: '#0054a5',
                             fillOpacity: 0.3,
                             fillColor: '#0054a5'
                         }
@@ -155,7 +156,7 @@ function drawRegion(map, regionList) {
         var customPoi = e.customPoi; // poi的默认字段
         var contentPoi = e.content; // poi的自定义字段
 
-        var content =  '<p style="width:280px;margin: 0; line-height: 20px;">地址：' +
+        var content = '<p style="width:280px;margin: 0; line-height: 20px;">地址：' +
             customPoi.address + '<br/>价格：' + contentPoi.price + '元/月<br/>面积：'
             + contentPoi.area + '平方米</p>';
         var opts = {
@@ -172,7 +173,7 @@ function drawRegion(map, regionList) {
 
         // 搜索信息提示框
         var searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
-           title: customPoi.title, // 标题
+            title: customPoi.title, // 标题
             width: 290,
             height: 60,
             panel: "panel", // 搜索结果面板
@@ -269,7 +270,8 @@ function loadHouseData() {
                                     default:
                                         direction = '南北';
                                         break;
-                                };
+                                }
+                                ;
 
                                 var tags = '';
                                 for (var i = 0; i < house.tags.length; i++) {

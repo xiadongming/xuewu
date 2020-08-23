@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class XuewuProjectApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(XuewuProjectApplication.class, args);
     }
 }

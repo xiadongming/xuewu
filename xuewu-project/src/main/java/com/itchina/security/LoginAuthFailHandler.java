@@ -16,21 +16,17 @@ import java.io.IOException;
  *  验证失败处理器，即输入用户名/密码失败的时候，会调用此controller、
  **/
 public class LoginAuthFailHandler extends SimpleUrlAuthenticationFailureHandler {
-
     final Logger logger = LoggerFactory.getLogger(LoginAuthFailHandler.class);
-
     private final LoginUrlEntryPoint urlEntryPoint;
-
     public LoginAuthFailHandler(LoginUrlEntryPoint urlEntryPoint) {
         this.urlEntryPoint = urlEntryPoint;
     }
-
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
         String targetUrl = this.urlEntryPoint.determineUrlToUseForThisRequest(request, response, exception);
         targetUrl += "?" + exception.getMessage();
         logger.info("targetUrl= " + targetUrl);
-
         super.setDefaultFailureUrl(targetUrl);
         super.onAuthenticationFailure(request, response, exception);
 

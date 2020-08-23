@@ -3,6 +3,8 @@ package com.itchina.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
+import javax.persistence.Column;
+
 /***
  *  @auther xiadongming
  *  @date 2020/7/19
@@ -22,6 +24,26 @@ public class SupportAddressDTO {
     private String cnName;
 
     private String level;
+
+    private double baiduMapLongtitue;
+    private  double baiduMapLatitude;
+
+
+    public void setBaiduMapLongtitue(double baiduMapLongtitue) {
+        this.baiduMapLongtitue = baiduMapLongtitue;
+    }
+
+    public void setBaiduMapLatitude(double baiduMapLatitude) {
+        this.baiduMapLatitude = baiduMapLatitude;
+    }
+
+    public double getBaiduMapLongtitue() {
+        return baiduMapLongtitue;
+    }
+
+    public double getBaiduMapLatitude() {
+        return baiduMapLatitude;
+    }
 
     public void setId(Long id) {
         this.id = id;

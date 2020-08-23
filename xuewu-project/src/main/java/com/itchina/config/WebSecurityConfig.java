@@ -1,15 +1,18 @@
 package com.itchina.config;
 
+import com.itchina.security.AuthFilter;
 import com.itchina.security.AuthProvider;
 import com.itchina.security.LoginAuthFailHandler;
 import com.itchina.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /***
  *  @auther xiadongming
@@ -25,6 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      **/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //过滤器之前，先进行验证，，
+        http.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
+
         /***
          * 规律：
          *除了放行的即permitAll()的url，其他的都要走 loginProcessingUrl("/login")//登录入口
@@ -63,8 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN").and();
-         auth.authenticationProvider(authProvider()).eraseCredentials(true);
-
+        auth.authenticationProvider(authProvider()).eraseCredentials(true);
     }
 
     @Bean
@@ -74,18 +79,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 判断是admin，还是user用户登录
-     * **/
+     **/
     @Bean
-    public LoginUrlEntryPoint urlEntryPoint(){
+    public LoginUrlEntryPoint urlEntryPoint() {
         return new LoginUrlEntryPoint("/user/login");
     }
 
     /**
      * 验证错误处理器
-     * **/
+     **/
     @Bean
-    public LoginAuthFailHandler authFailHandler(){
-        return  new LoginAuthFailHandler(urlEntryPoint());
+    public LoginAuthFailHandler authFailHandler() {
+        return new LoginAuthFailHandler(urlEntryPoint());
+    }
+
+    @Bean
+    public AuthFilter authFilter() {
+        AuthFilter authFilter = new AuthFilter();
+        authFilter.setAuthenticationManager(authenticationManager());
+        authFilter.setAuthenticationFailureHandler(authFailHandler());
+        return authFilter;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        AuthenticationManager authenticationManager = null;
+        try {
+            authenticationManager =  super.authenticationManager();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  authenticationManager;
     }
 
 }
